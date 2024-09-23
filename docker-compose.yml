@@ -1,17 +1,36 @@
-version: '2'
-services:
-  cb:
-    image: jpf2209/6_2hd
-    ports:
-      - "8000:8000"
-    environment:
-        - CONFIG_MAIL_HOST=${CONFIG_MAIL_HOST}
-        - CONFIG_MAIL_PORT=${CONFIG_MAIL_PORT}
-        - CONFIG_MAIL_SMTP_AUTH=${CONFIG_MAIL_SMTP_AUTH}
-        - CONFIG_MAIL_STARTTLS=${CONFIG_MAIL_STARTTLS}
-        - CONFIG_MAIL_USERNAME=${CONFIG_MAIL_USERNAME}
-        - CONFIG_MAIL_PASSWORD=${CONFIG_MAIL_PASSWORD}
-    logging:
-        options:
-          max-size: "20m"
-          max-file: "10"
+apiVersion: apps/v1
+kind: Deployment # Kubernetes resource kind we are creating
+metadata:
+  name: 6_2hd
+spec:
+  selector:
+    matchLabels:
+      app: 6_2hd
+  replicas: 2 # Number of replicas that will be created for this deployment
+  template:
+    metadata:
+      labels:
+        app: ekart
+    spec:
+      containers:
+        - name: ekart
+          image: jpf2209/6_2hd:latest # Image that will be used to containers in the cluster
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 8070 # The port that the container is running on in the cluster
+
+
+---
+
+apiVersion: v1 # Kubernetes API version
+kind: Service # Kubernetes resource kind we are creating
+metadata: # Metadata of the resource kind we are creating
+  name: ekart-ssvc
+spec:
+  selector:
+    app: ekart
+  ports:
+    - protocol: "TCP"
+      port: 8070 # The port that the service is running on in the cluster
+      targetPort: 8070 # The port exposed by the service
+  type: LoadBalancer # type of the service.
