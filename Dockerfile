@@ -1,17 +1,7 @@
-FROM openjdk:8-jre-alpine
+FROM java:8-jre
+MAINTAINER Joshua Fernandes <joshpeyton04@gmail.com>
 
-# set shell to bash
-# source: https://stackoverflow.com/a/40944512/3128926
-RUN apk update && apk add bash
+ADD ./build/libs/test-1.0.jar /application/
+CMD ["java", "-jar", "/application/test-1.0.jar"]
 
-# Set the working directory to /app
-WORKDIR /
-
-# Copy the fat jar into the container at /app
-COPY /target/docker-java-app-example.jar /
-
-# Make port 8080 available to the world outside this container
-EXPOSE 8080
-
-# Run jar file when the container launches
-CMD ["java", "-jar", "docker-java-app-example.jar"]
+EXPOSE 8000
