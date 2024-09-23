@@ -1,5 +1,7 @@
 FROM node:16.14-alpine
 
+WORKDIR /DockerFiles
+
 COPY . .
 
 RUN npm install
