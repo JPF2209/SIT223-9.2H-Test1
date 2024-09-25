@@ -13,7 +13,7 @@ spec:
         app: 6_2hd
     spec:
       containers:
-        - name: ekart
+        - name: 6_2hd
           image: jpf2209/6_2hd:latest # Image that will be used to containers in the cluster
           imagePullPolicy: IfNotPresent
           ports:
@@ -28,7 +28,7 @@ metadata: # Metadata of the resource kind we are creating
   name: ekart-ssvc
 spec:
   selector:
-    app: ekart
+    app: 6_2hd
   ports:
     - protocol: "TCP"
       port: 8070 # The port that the service is running on in the cluster
