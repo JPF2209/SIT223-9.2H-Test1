@@ -1,20 +1,12 @@
 FROM node:7-onbuild
 
-RUN mkdir /workdir/
-WORKDIR /workdir/
+# set maintainer
+LABEL maintainer "joshpeyton04@gmail.com"
 
-COPY package.json .
-COPY rollup.config.js .
-COPY ./src ./src/
+# set a health check
+HEALTHCHECK --interval=5s \
+            --timeout=5s \
+            CMD curl -f http://127.0.0.1:8000 || exit 1
 
-RUN npm install
-RUN npm run bundle
-
-
-
-FROM maven:3.8-openjdk-8 AS build
-
-COPY pom.xml .
-COPY ./local-repo ./local-repo/
-COPY checkstyle-codedefenders.xml .
-
+# tell docker what port to expose
+EXPOSE 8000
